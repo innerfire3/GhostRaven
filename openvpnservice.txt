@@ -1,0 +1,25 @@
+#Setup the openvpn client
+
+copy your ovpn file to /root/ and in my case my file was named rasp4.ovpn under /root directory
+
+sudo nano /etc/systemd/system/openvpn@rasp4.service
+
+then put:
+[Unit]
+Description=OpenVPN connection to %i
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/usr/sbin/openvpn --config /root/%i.ovpn
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+
+
+now execute these commands:
+sudo systemctl enable openvpn@rasp4
+sudo systemctl start openvpn@rasp4
+sudo systemctl status openvpn@rasp4
